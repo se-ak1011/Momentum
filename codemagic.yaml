@@ -10,14 +10,16 @@ workflows:
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: com.example.momentum
+        bundle_identifier: com.momentumnr.app
       groups:
         - Ios_signing
       node: latest
       xcode: latest
       cocoapods: default
       vars:
-        IOS_BUNDLE_IDENTIFIER: com.example.momentum
+        IOS_BUNDLE_IDENTIFIER: com.momentumnr.app
+        EXPO_PUBLIC_SUPABASE_URL: https://wrwtydmgjdqpellijutq.supabase.co/
+        EXPO_PUBLIC_SUPABASE_ANON_KEY: sb_publishable_pcpAu5k6QZE7tKY55VZ6Fw_1QbLG5Y9
         # SDK 54 / RN 0.81 default. Reanimated 4 requires the New Architecture.
         RCT_NEW_ARCH_ENABLED: "1"
 

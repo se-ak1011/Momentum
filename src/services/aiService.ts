@@ -48,7 +48,7 @@ const chat = async (systemPrompt: string, userMessage: string): Promise<string> 
 };
 
 const SUMMARIZER_SYSTEM = [
-  'You are a clinical note summariser for a solo coach or therapist.',
+  'You are a clinical note summarizer for a solo coach or therapist.',
   'Produce a concise 2-3 sentence summary of the session notes provided.',
   'Focus on key themes, progress, and agreed next steps.',
   'Never include personal identifying information.',
@@ -58,7 +58,7 @@ const SUMMARIZER_SYSTEM = [
 /**
  * Generate a concise AI summary from raw session notes.
  */
-export const summariseSession = async (notes: string): Promise<string> => {
+export const summarizeSession = async (notes: string): Promise<string> => {
   if (!notes.trim()) {
     return '';
   }

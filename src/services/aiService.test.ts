@@ -1,4 +1,4 @@
-import { suggestFollowUps, summariseSession } from './aiService';
+import { suggestFollowUps, summarizeSession } from './aiService';
 
 describe('aiService (no API key)', () => {
   beforeEach(() => {
@@ -6,13 +6,13 @@ describe('aiService (no API key)', () => {
     delete process.env['EXPO_PUBLIC_OPENAI_API_KEY'];
   });
 
-  it('summariseSession returns empty string for empty notes', async () => {
-    const result = await summariseSession('   ');
+  it('summarizeSession returns empty string for empty notes', async () => {
+    const result = await summarizeSession('   ');
     expect(result).toBe('');
   });
 
-  it('summariseSession throws when API key is missing', async () => {
-    await expect(summariseSession('Patient discussed goals.')).rejects.toThrow('EXPO_PUBLIC_OPENAI_API_KEY');
+  it('summarizeSession throws when API key is missing', async () => {
+    await expect(summarizeSession('Patient discussed goals.')).rejects.toThrow('EXPO_PUBLIC_OPENAI_API_KEY');
   });
 
   it('suggestFollowUps returns empty array for empty summary', async () => {

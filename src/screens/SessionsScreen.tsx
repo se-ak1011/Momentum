@@ -3,7 +3,7 @@ import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 
 import { EmptyState } from '../components/EmptyState';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { useAppContext } from '../context/AppContext';
-import { summariseSession } from '../services/aiService';
+import { summarizeSession } from '../services/aiService';
 
 export function SessionsScreen() {
   const { clients, sessions, addSession, error } = useAppContext();
@@ -22,12 +22,12 @@ export function SessionsScreen() {
     setAiLoading(true);
     setAiError(null);
     try {
-      const generated = await summariseSession(notes);
+      const generated = await summarizeSession(notes);
       if (generated) {
         setSummary(generated);
       }
     } catch (err) {
-      setAiError(err instanceof Error ? err.message : 'AI summarise failed.');
+      setAiError(err instanceof Error ? err.message : 'AI summarize failed.');
     } finally {
       setAiLoading(false);
     }

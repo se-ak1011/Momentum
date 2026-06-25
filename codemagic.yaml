@@ -1,0 +1,39 @@
+workflows:
+  momentum-expo:
+    name: Momentum Expo CI
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    environment:
+      node: 22.18.0
+      vars:
+        EXPO_TOKEN: Encrypted(EXPO_TOKEN)
+        EXPO_PUBLIC_API_BASE_URL: Encrypted(EXPO_PUBLIC_API_BASE_URL)
+        EXPO_PUBLIC_AUTH_PROVIDER_KEY: Encrypted(EXPO_PUBLIC_AUTH_PROVIDER_KEY)
+        EXPO_PUBLIC_ANALYTICS_KEY: Encrypted(EXPO_PUBLIC_ANALYTICS_KEY)
+        EXPO_APPLE_APP_SPECIFIC_PASSWORD: Encrypted(EXPO_APPLE_APP_SPECIFIC_PASSWORD)
+        CM_KEYSTORE_PATH: Encrypted(CM_KEYSTORE_PATH)
+        CM_KEYSTORE_PASSWORD: Encrypted(CM_KEYSTORE_PASSWORD)
+        CM_KEY_ALIAS: Encrypted(CM_KEY_ALIAS)
+        CM_KEY_PASSWORD: Encrypted(CM_KEY_PASSWORD)
+      xcode: latest
+    scripts:
+      - name: Install dependencies
+        script: npm ci
+      - name: Lint
+        script: npm run lint
+      - name: Test
+        script: npm run test -- --runInBand
+      - name: Build Android
+        script: npx eas build --platform android --profile production --non-interactive --wait --json > android-build.json
+      - name: Build iOS
+        script: npx eas build --platform ios --profile production --non-interactive --wait --json > ios-build.json
+    artifacts:
+      - android-build.json
+      - ios-build.json
+    publishing:
+      email:
+        recipients:
+          - team@example.com
+        notify:
+          success: true
+          failure: true

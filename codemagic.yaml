@@ -24,9 +24,9 @@ workflows:
       - name: Test
         script: npm run test -- --runInBand
       - name: Build Android
-        script: npx eas build --platform android --profile production --non-interactive --wait --json > android-build.json
+        script: npx eas build --platform android --profile production --non-interactive --no-wait --json > android-build.json
       - name: Build iOS
-        script: npx eas build --platform ios --profile production --non-interactive --wait --json > ios-build.json
+        script: npx eas build --platform ios --profile production --non-interactive --no-wait --json > ios-build.json
     artifacts:
       - android-build.json
       - ios-build.json

@@ -126,7 +126,6 @@ const styles = StyleSheet.create({
   cardTitle: {
     ...ui.sectionTitle,
     fontSize: 17,
-    fontWeight: '600',
   },
   cardMeta: {
     ...ui.mutedText,

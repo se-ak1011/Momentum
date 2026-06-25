@@ -84,7 +84,7 @@ export function TasksScreen() {
           <Text style={ui.secondaryLabel}>AI: suggest follow-ups from last session</Text>
         )}
       </Pressable>
-      {!!aiError && <Text style={ui.warningText}>{aiError}</Text>}
+      {!!aiError && <Text style={ui.errorText}>{aiError}</Text>}
 
       {suggestions.length > 0 && (
         <View style={styles.card}>

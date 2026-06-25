@@ -43,9 +43,8 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   cardTitle: {
-    color: brand.text,
+    ...ui.sectionTitle,
     fontSize: 18,
-    fontWeight: '600',
   },
   listItem: {
     color: brand.mutedText,

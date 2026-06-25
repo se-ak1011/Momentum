@@ -54,13 +54,13 @@ const styles = StyleSheet.create({
   dangerButton: {
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: brand.warning,
-    backgroundColor: '#F6F0E5',
+    borderColor: brand.danger,
+    backgroundColor: '#F6ECE8',
     padding: 12,
     marginTop: 6,
   },
   dangerLabel: {
-    color: brand.warning,
+    color: brand.danger,
     textAlign: 'center',
     fontWeight: '700',
   },

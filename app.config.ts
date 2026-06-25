@@ -26,8 +26,9 @@ export default {
       favicon: './assets/favicon.png',
     },
     extra: {
+      supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL,
+      supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
       apiBaseUrl: process.env.EXPO_PUBLIC_API_BASE_URL,
-      authProviderKey: process.env.EXPO_PUBLIC_AUTH_PROVIDER_KEY,
       analyticsKey: process.env.EXPO_PUBLIC_ANALYTICS_KEY,
       eas: {
         projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID ?? 'replace-with-eas-project-id',

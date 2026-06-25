@@ -1,41 +1,76 @@
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { EmptyState } from '../components/EmptyState';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { useAppContext } from '../context/AppContext';
+import { summariseSession } from '../services/aiService';
 
 export function SessionsScreen() {
-  const { clients, sessions, addSession } = useAppContext();
+  const { clients, sessions, addSession, error } = useAppContext();
   const [summary, setSummary] = useState('');
   const [notes, setNotes] = useState('');
   const [nextSteps, setNextSteps] = useState('');
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
 
   const selectedClient = clients.find((client) => client.status === 'active');
+
+  const handleSummarise = async () => {
+    if (!notes.trim()) {
+      return;
+    }
+    setAiLoading(true);
+    setAiError(null);
+    try {
+      const generated = await summariseSession(notes);
+      if (generated) {
+        setSummary(generated);
+      }
+    } catch (err) {
+      setAiError(err instanceof Error ? err.message : 'AI summarise failed.');
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    if (!selectedClient || !summary.trim()) {
+      return;
+    }
+    await addSession({
+      clientId: selectedClient.id,
+      date: new Date().toISOString(),
+      summary: summary.trim(),
+      notes: notes.trim(),
+      nextSteps: nextSteps.trim(),
+    });
+    setSummary('');
+    setNotes('');
+    setNextSteps('');
+  };
 
   return (
     <ScreenContainer title="Sessions">
       <Text style={styles.helper}>Current client: {selectedClient?.name ?? 'No active clients yet'}</Text>
+      {!!error && <Text style={styles.errorText}>{error}</Text>}
+      <TextInput
+        style={[styles.input, styles.multiline]}
+        placeholder="Session notes (raw)"
+        value={notes}
+        onChangeText={setNotes}
+        multiline
+      />
+      <Pressable style={[styles.secondaryButton, aiLoading && styles.disabled]} onPress={handleSummarise} disabled={aiLoading}>
+        {aiLoading ? (
+          <ActivityIndicator color="#2f4be0" />
+        ) : (
+          <Text style={styles.secondaryLabel}>AI: generate summary from notes</Text>
+        )}
+      </Pressable>
+      {!!aiError && <Text style={styles.errorText}>{aiError}</Text>}
       <TextInput style={styles.input} placeholder="Session summary" value={summary} onChangeText={setSummary} />
-      <TextInput style={styles.input} placeholder="Session notes" value={notes} onChangeText={setNotes} multiline />
       <TextInput style={styles.input} placeholder="Next steps" value={nextSteps} onChangeText={setNextSteps} />
-      <Pressable
-        style={styles.primaryButton}
-        onPress={() => {
-          if (!selectedClient || !summary.trim()) {
-            return;
-          }
-          addSession({
-            clientId: selectedClient.id,
-            date: new Date().toISOString(),
-            summary: summary.trim(),
-            notes: notes.trim(),
-            nextSteps: nextSteps.trim(),
-          });
-          setSummary('');
-          setNotes('');
-          setNextSteps('');
-        }}
-      >
+      <Pressable style={styles.primaryButton} onPress={handleSave}>
         <Text style={styles.primaryLabel}>Save session</Text>
       </Pressable>
 
@@ -57,6 +92,10 @@ const styles = StyleSheet.create({
   helper: {
     color: '#4b587c',
   },
+  errorText: {
+    color: '#c0392b',
+    fontSize: 13,
+  },
   input: {
     borderWidth: 1,
     borderColor: '#d8dff2',
@@ -64,6 +103,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
+  },
+  multiline: {
+    minHeight: 80,
+    textAlignVertical: 'top',
   },
   primaryButton: {
     borderRadius: 8,
@@ -74,6 +117,20 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     fontWeight: '600',
+  },
+  secondaryButton: {
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#2f4be0',
+    padding: 10,
+  },
+  secondaryLabel: {
+    color: '#2f4be0',
+    textAlign: 'center',
+    fontWeight: '600',
+  },
+  disabled: {
+    opacity: 0.6,
   },
   card: {
     borderWidth: 1,

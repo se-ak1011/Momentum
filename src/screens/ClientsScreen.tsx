@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { EmptyState } from '../components/EmptyState';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { useAppContext } from '../context/AppContext';
+import { brand, ui } from '../theme/brand';
 
 export function ClientsScreen() {
   const { clients, intakeForms, addClient, updateClient, archiveClient, addIntakeQuestion } = useAppContext();
@@ -18,19 +19,32 @@ export function ClientsScreen() {
 
   return (
     <ScreenContainer title="Clients">
-      <TextInput style={styles.input} placeholder="Search clients" value={searchTerm} onChangeText={setSearchTerm} />
+      <TextInput
+        style={ui.input}
+        placeholder="Search clients"
+        placeholderTextColor={brand.mutedText}
+        value={searchTerm}
+        onChangeText={setSearchTerm}
+      />
       <View style={styles.row}>
-        <TextInput style={[styles.input, styles.flex]} placeholder="Client name" value={name} onChangeText={setName} />
         <TextInput
-          style={[styles.input, styles.flex]}
+          style={[ui.input, styles.flex]}
+          placeholder="Client name"
+          placeholderTextColor={brand.mutedText}
+          value={name}
+          onChangeText={setName}
+        />
+        <TextInput
+          style={[ui.input, styles.flex]}
           placeholder="Client email"
+          placeholderTextColor={brand.mutedText}
           autoCapitalize="none"
           value={email}
           onChangeText={setEmail}
         />
       </View>
       <Pressable
-        style={styles.primaryButton}
+        style={ui.primaryButton}
         onPress={() => {
           if (!name.trim() || !email.trim()) {
             return;
@@ -40,7 +54,7 @@ export function ClientsScreen() {
           setEmail('');
         }}
       >
-        <Text style={styles.primaryLabel}>Add client</Text>
+        <Text style={ui.primaryLabel}>Add client</Text>
       </Pressable>
 
       {visibleClients.length ? (
@@ -51,10 +65,10 @@ export function ClientsScreen() {
             <Text style={styles.cardMeta}>Status: {client.status}</Text>
             <View style={styles.actionsRow}>
               <Pressable onPress={() => updateClient(client.id, { name: `${client.name} (edited)` })}>
-                <Text style={styles.action}>Edit</Text>
+                <Text style={ui.actionText}>Edit</Text>
               </Pressable>
               <Pressable onPress={() => archiveClient(client.id)}>
-                <Text style={styles.action}>Archive</Text>
+                <Text style={ui.actionText}>Archive</Text>
               </Pressable>
             </View>
           </View>
@@ -63,7 +77,7 @@ export function ClientsScreen() {
         <EmptyState title="No matching clients" subtitle="Try a different search or add a new client." />
       )}
 
-      <View style={styles.card}>
+      <View style={styles.intakeCard}>
         <Text style={styles.cardTitle}>Intake forms</Text>
         {intakeForms.map((form) => (
           <Text key={form.id} style={styles.cardMeta}>
@@ -71,13 +85,14 @@ export function ClientsScreen() {
           </Text>
         ))}
         <TextInput
-          style={styles.input}
+          style={ui.input}
           placeholder="Custom intake question"
+          placeholderTextColor={brand.mutedText}
           value={intakeQuestion}
           onChangeText={setIntakeQuestion}
         />
         <Pressable
-          style={styles.secondaryButton}
+          style={ui.secondaryButton}
           onPress={() => {
             if (!intakeQuestion.trim() || !intakeForms[0]) {
               return;
@@ -86,7 +101,7 @@ export function ClientsScreen() {
             setIntakeQuestion('');
           }}
         >
-          <Text style={styles.secondaryLabel}>Add intake question</Text>
+          <Text style={ui.secondaryLabel}>Add intake question</Text>
         </Pressable>
       </View>
     </ScreenContainer>
@@ -96,61 +111,28 @@ export function ClientsScreen() {
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 10,
   },
   flex: {
     flex: 1,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#d8dff2',
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-  },
-  primaryButton: {
-    borderRadius: 8,
-    backgroundColor: '#2f4be0',
-    padding: 12,
-  },
-  primaryLabel: {
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-  secondaryButton: {
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#2f4be0',
-    padding: 10,
-  },
-  secondaryLabel: {
-    color: '#2f4be0',
-    textAlign: 'center',
-    fontWeight: '600',
-  },
   card: {
-    borderWidth: 1,
-    borderColor: '#d8dff2',
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    padding: 12,
-    gap: 6,
+    ...ui.card,
+  },
+  intakeCard: {
+    ...ui.card,
+    marginTop: 6,
   },
   cardTitle: {
-    fontSize: 16,
+    ...ui.sectionTitle,
+    fontSize: 17,
     fontWeight: '600',
   },
   cardMeta: {
-    color: '#4b587c',
+    ...ui.mutedText,
   },
   actionsRow: {
     flexDirection: 'row',
     gap: 16,
-  },
-  action: {
-    color: '#2f4be0',
-    fontWeight: '600',
   },
 });

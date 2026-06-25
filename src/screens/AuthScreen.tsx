@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { useAppContext } from '../context/AppContext';
+import { brand, ui } from '../theme/brand';
 
 export function AuthScreen() {
   const [email, setEmail] = useState('');
@@ -27,13 +28,14 @@ export function AuthScreen() {
   };
 
   return (
-    <ScreenContainer title="Momentum">
-      <Text style={styles.subtitle}>Sign in to manage clients, sessions, and follow-ups.</Text>
-      {!!error && <Text style={styles.errorText}>{error}</Text>}
+    <ScreenContainer title="Tenant Passport">
+      <Text style={styles.subtitle}>The renter’s side of renting, ready whenever you apply.</Text>
+      {!!error && <Text style={ui.errorText}>{error}</Text>}
       {magicSent && <Text style={styles.successText}>Magic link sent — check your email.</Text>}
       <TextInput
-        style={styles.input}
+        style={ui.input}
         placeholder="Email"
+        placeholderTextColor={brand.mutedText}
         autoCapitalize="none"
         keyboardType="email-address"
         value={email}
@@ -41,18 +43,19 @@ export function AuthScreen() {
         editable={!loading}
       />
       <TextInput
-        style={styles.input}
+        style={ui.input}
         placeholder="Password"
+        placeholderTextColor={brand.mutedText}
         secureTextEntry
         value={password}
         onChangeText={setPassword}
         editable={!loading}
       />
-      <Pressable style={[styles.primaryButton, loading && styles.disabled]} onPress={handleSignIn} disabled={loading}>
-        {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.primaryLabel}>Sign in</Text>}
+      <Pressable style={[ui.primaryButton, loading && styles.disabled]} onPress={handleSignIn} disabled={loading}>
+        {loading ? <ActivityIndicator color={brand.card} /> : <Text style={ui.primaryLabel}>Sign in</Text>}
       </Pressable>
-      <Pressable style={[styles.secondaryButton, loading && styles.disabled]} onPress={handleMagicLink} disabled={loading}>
-        <Text style={styles.secondaryLabel}>Send magic link</Text>
+      <Pressable style={[ui.secondaryButton, loading && styles.disabled]} onPress={handleMagicLink} disabled={loading}>
+        <Text style={ui.secondaryLabel}>Send magic link</Text>
       </Pressable>
     </ScreenContainer>
   );
@@ -60,44 +63,15 @@ export function AuthScreen() {
 
 const styles = StyleSheet.create({
   subtitle: {
-    color: '#4b587c',
-  },
-  errorText: {
-    color: '#c0392b',
-    fontSize: 13,
+    ...ui.mutedText,
   },
   successText: {
-    color: '#27ae60',
+    color: brand.primary,
+    backgroundColor: brand.successSoft,
     fontSize: 13,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#d8dff2',
-    backgroundColor: '#ffffff',
-    borderRadius: 8,
+    borderRadius: 10,
     paddingHorizontal: 12,
-    paddingVertical: 10,
-  },
-  primaryButton: {
-    borderRadius: 8,
-    backgroundColor: '#2f4be0',
-    padding: 12,
-  },
-  primaryLabel: {
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-  secondaryButton: {
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#2f4be0',
-    padding: 12,
-  },
-  secondaryLabel: {
-    color: '#2f4be0',
-    textAlign: 'center',
-    fontWeight: '600',
+    paddingVertical: 9,
   },
   disabled: {
     opacity: 0.6,

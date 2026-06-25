@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { brand, ui } from '../theme/brand';
 
 export function StatCard({ label, value }: { label: string; value: number }) {
   return (
@@ -12,18 +13,17 @@ export function StatCard({ label, value }: { label: string; value: number }) {
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    borderRadius: 12,
-    padding: 12,
-    backgroundColor: '#ffffff',
-    borderWidth: 1,
-    borderColor: '#d8dff2',
-    gap: 4,
+    ...ui.card,
+    gap: 6,
   },
   value: {
-    fontSize: 22,
+    color: brand.text,
+    fontSize: 28,
     fontWeight: '700',
+    letterSpacing: -0.4,
   },
   label: {
-    color: '#4b587c',
+    color: brand.mutedText,
+    fontSize: 14,
   },
 });

@@ -3,6 +3,7 @@ import { EmptyState } from '../components/EmptyState';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { StatCard } from '../components/StatCard';
 import { useAppContext } from '../context/AppContext';
+import { brand, ui } from '../theme/brand';
 
 export function DashboardScreen() {
   const { dashboard } = useAppContext();
@@ -35,20 +36,19 @@ export function DashboardScreen() {
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 12,
   },
   card: {
-    borderWidth: 1,
-    borderColor: '#d8dff2',
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    padding: 12,
-    gap: 6,
+    ...ui.card,
+    gap: 8,
   },
   cardTitle: {
+    color: brand.text,
+    fontSize: 18,
     fontWeight: '600',
   },
   listItem: {
-    color: '#4b587c',
+    color: brand.mutedText,
+    lineHeight: 21,
   },
 });

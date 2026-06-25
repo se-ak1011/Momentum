@@ -4,6 +4,7 @@ import { EmptyState } from '../components/EmptyState';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { useAppContext } from '../context/AppContext';
 import { summarizeSession } from '../services/aiService';
+import { brand, ui } from '../theme/brand';
 
 export function SessionsScreen() {
   const { clients, sessions, addSession, error } = useAppContext();
@@ -52,26 +53,39 @@ export function SessionsScreen() {
   return (
     <ScreenContainer title="Sessions">
       <Text style={styles.helper}>Current client: {selectedClient?.name ?? 'No active clients yet'}</Text>
-      {!!error && <Text style={styles.errorText}>{error}</Text>}
+      {!!error && <Text style={ui.errorText}>{error}</Text>}
       <TextInput
-        style={[styles.input, styles.multiline]}
+        style={[ui.input, styles.multiline]}
         placeholder="Session notes (raw)"
+        placeholderTextColor={brand.mutedText}
         value={notes}
         onChangeText={setNotes}
         multiline
       />
-      <Pressable style={[styles.secondaryButton, aiLoading && styles.disabled]} onPress={handleSummarise} disabled={aiLoading}>
+      <Pressable style={[ui.secondaryButton, aiLoading && styles.disabled]} onPress={handleSummarise} disabled={aiLoading}>
         {aiLoading ? (
-          <ActivityIndicator color="#2f4be0" />
+          <ActivityIndicator color={brand.primary} />
         ) : (
-          <Text style={styles.secondaryLabel}>AI: generate summary from notes</Text>
+          <Text style={ui.secondaryLabel}>AI: generate summary from notes</Text>
         )}
       </Pressable>
-      {!!aiError && <Text style={styles.errorText}>{aiError}</Text>}
-      <TextInput style={styles.input} placeholder="Session summary" value={summary} onChangeText={setSummary} />
-      <TextInput style={styles.input} placeholder="Next steps" value={nextSteps} onChangeText={setNextSteps} />
-      <Pressable style={styles.primaryButton} onPress={handleSave}>
-        <Text style={styles.primaryLabel}>Save session</Text>
+      {!!aiError && <Text style={ui.errorText}>{aiError}</Text>}
+      <TextInput
+        style={ui.input}
+        placeholder="Session summary"
+        placeholderTextColor={brand.mutedText}
+        value={summary}
+        onChangeText={setSummary}
+      />
+      <TextInput
+        style={ui.input}
+        placeholder="Next steps"
+        placeholderTextColor={brand.mutedText}
+        value={nextSteps}
+        onChangeText={setNextSteps}
+      />
+      <Pressable style={ui.primaryButton} onPress={handleSave}>
+        <Text style={ui.primaryLabel}>Save session</Text>
       </Pressable>
 
       {sessions.length ? (
@@ -90,60 +104,23 @@ export function SessionsScreen() {
 
 const styles = StyleSheet.create({
   helper: {
-    color: '#4b587c',
-  },
-  errorText: {
-    color: '#c0392b',
-    fontSize: 13,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#d8dff2',
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    ...ui.mutedText,
   },
   multiline: {
-    minHeight: 80,
+    minHeight: 96,
     textAlignVertical: 'top',
-  },
-  primaryButton: {
-    borderRadius: 8,
-    backgroundColor: '#2f4be0',
-    padding: 12,
-  },
-  primaryLabel: {
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-  secondaryButton: {
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#2f4be0',
-    padding: 10,
-  },
-  secondaryLabel: {
-    color: '#2f4be0',
-    textAlign: 'center',
-    fontWeight: '600',
   },
   disabled: {
     opacity: 0.6,
   },
   card: {
-    borderWidth: 1,
-    borderColor: '#d8dff2',
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    padding: 12,
-    gap: 6,
+    ...ui.card,
   },
   cardTitle: {
-    fontWeight: '600',
+    ...ui.sectionTitle,
+    fontSize: 17,
   },
   cardMeta: {
-    color: '#4b587c',
+    ...ui.mutedText,
   },
 });

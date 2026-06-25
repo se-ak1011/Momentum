@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { useAppContext } from '../context/AppContext';
+import { brand, ui } from '../theme/brand';
 import type { BusinessType } from '../types/models';
 
 const businessTypes: BusinessType[] = ['consulting', 'coaching', 'psychology'];
@@ -9,16 +10,34 @@ const businessTypes: BusinessType[] = ['consulting', 'coaching', 'psychology'];
 export function OnboardingScreen() {
   const [name, setName] = useState('');
   const [workflowName, setWorkflowName] = useState('Standard Follow-up');
-  const [brandColor, setBrandColor] = useState('#2f4be0');
+  const [brandColor, setBrandColor] = useState(brand.primary);
   const [businessType, setBusinessType] = useState<BusinessType>('consulting');
   const { completeOnboarding } = useAppContext();
 
   return (
     <ScreenContainer title="Onboarding setup">
       <Text style={styles.subtitle}>Create your provider profile and default client workflow.</Text>
-      <TextInput style={styles.input} placeholder="Provider name" value={name} onChangeText={setName} />
-      <TextInput style={styles.input} placeholder="Brand color" value={brandColor} onChangeText={setBrandColor} />
-      <TextInput style={styles.input} placeholder="Workflow setup" value={workflowName} onChangeText={setWorkflowName} />
+      <TextInput
+        style={ui.input}
+        placeholder="Provider name"
+        placeholderTextColor={brand.mutedText}
+        value={name}
+        onChangeText={setName}
+      />
+      <TextInput
+        style={ui.input}
+        placeholder="Brand color"
+        placeholderTextColor={brand.mutedText}
+        value={brandColor}
+        onChangeText={setBrandColor}
+      />
+      <TextInput
+        style={ui.input}
+        placeholder="Workflow setup"
+        placeholderTextColor={brand.mutedText}
+        value={workflowName}
+        onChangeText={setWorkflowName}
+      />
       <View style={styles.segmentedRow}>
         {businessTypes.map((type) => (
           <Pressable
@@ -31,10 +50,10 @@ export function OnboardingScreen() {
         ))}
       </View>
       <Pressable
-        style={styles.primaryButton}
+        style={ui.primaryButton}
         onPress={() => completeOnboarding({ name, businessType, brandColor, workflowName })}
       >
-        <Text style={styles.primaryLabel}>Finish onboarding</Text>
+        <Text style={ui.primaryLabel}>Finish onboarding</Text>
       </Pressable>
     </ScreenContainer>
   );
@@ -42,49 +61,32 @@ export function OnboardingScreen() {
 
 const styles = StyleSheet.create({
   subtitle: {
-    color: '#4b587c',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#d8dff2',
-    backgroundColor: '#ffffff',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    ...ui.mutedText,
   },
   segmentedRow: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 10,
     flexWrap: 'wrap',
   },
   segment: {
     borderWidth: 1,
-    borderColor: '#d8dff2',
+    borderColor: brand.border,
     borderRadius: 24,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    backgroundColor: '#fff',
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    backgroundColor: brand.card,
   },
   segmentActive: {
-    backgroundColor: '#2f4be0',
-    borderColor: '#2f4be0',
+    backgroundColor: brand.successSoft,
+    borderColor: brand.accent,
   },
   segmentLabel: {
-    color: '#4b587c',
+    color: brand.mutedText,
     textTransform: 'capitalize',
   },
   segmentLabelActive: {
-    color: '#fff',
+    color: brand.primary,
+    fontWeight: '700',
     textTransform: 'capitalize',
-  },
-  primaryButton: {
-    borderRadius: 8,
-    backgroundColor: '#2f4be0',
-    padding: 12,
-  },
-  primaryLabel: {
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: '600',
   },
 });

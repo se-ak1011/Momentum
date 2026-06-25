@@ -4,6 +4,7 @@ import { EmptyState } from '../components/EmptyState';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { useAppContext } from '../context/AppContext';
 import { suggestFollowUps } from '../services/aiService';
+import { brand, ui } from '../theme/brand';
 import type { Task } from '../types/models';
 
 const tomorrow = (): string => new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString();
@@ -63,21 +64,27 @@ export function TasksScreen() {
   return (
     <ScreenContainer title="Tasks & reminders">
       <Text style={styles.helper}>Push nudges are prepared through reminder records and Expo notification services.</Text>
-      {!!error && <Text style={styles.errorText}>{error}</Text>}
+      {!!error && <Text style={ui.errorText}>{error}</Text>}
 
-      <TextInput style={styles.input} placeholder="Homework or follow-up task" value={title} onChangeText={setTitle} />
-      <Pressable style={styles.primaryButton} onPress={() => void handleAddManual()}>
-        <Text style={styles.primaryLabel}>Add task</Text>
+      <TextInput
+        style={ui.input}
+        placeholder="Homework or follow-up task"
+        placeholderTextColor={brand.mutedText}
+        value={title}
+        onChangeText={setTitle}
+      />
+      <Pressable style={ui.primaryButton} onPress={() => void handleAddManual()}>
+        <Text style={ui.primaryLabel}>Add task</Text>
       </Pressable>
 
-      <Pressable style={[styles.secondaryButton, aiLoading && styles.disabled]} onPress={() => void handleSuggest()} disabled={aiLoading}>
+      <Pressable style={[ui.secondaryButton, aiLoading && styles.disabled]} onPress={() => void handleSuggest()} disabled={aiLoading}>
         {aiLoading ? (
-          <ActivityIndicator color="#2f4be0" />
+          <ActivityIndicator color={brand.primary} />
         ) : (
-          <Text style={styles.secondaryLabel}>AI: suggest follow-ups from last session</Text>
+          <Text style={ui.secondaryLabel}>AI: suggest follow-ups from last session</Text>
         )}
       </Pressable>
-      {!!aiError && <Text style={styles.errorText}>{aiError}</Text>}
+      {!!aiError && <Text style={ui.warningText}>{aiError}</Text>}
 
       {suggestions.length > 0 && (
         <View style={styles.card}>
@@ -98,7 +105,7 @@ export function TasksScreen() {
             <Text style={styles.cardMeta}>Follow-up: {task.followUpStatus}</Text>
             {task.status !== 'done' && (
               <Pressable onPress={() => void markTaskDone(task.id)}>
-                <Text style={styles.action}>Mark done</Text>
+                <Text style={ui.actionText}>Mark done</Text>
               </Pressable>
             )}
           </View>
@@ -112,64 +119,23 @@ export function TasksScreen() {
 
 const styles = StyleSheet.create({
   helper: {
-    color: '#4b587c',
-  },
-  errorText: {
-    color: '#c0392b',
-    fontSize: 13,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#d8dff2',
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-  },
-  primaryButton: {
-    borderRadius: 8,
-    backgroundColor: '#2f4be0',
-    padding: 12,
-  },
-  primaryLabel: {
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-  secondaryButton: {
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#2f4be0',
-    padding: 10,
-  },
-  secondaryLabel: {
-    color: '#2f4be0',
-    textAlign: 'center',
-    fontWeight: '600',
+    ...ui.mutedText,
   },
   disabled: {
     opacity: 0.6,
   },
   card: {
-    borderWidth: 1,
-    borderColor: '#d8dff2',
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    padding: 12,
-    gap: 6,
+    ...ui.card,
   },
   cardTitle: {
-    fontWeight: '600',
+    ...ui.sectionTitle,
+    fontSize: 17,
   },
   cardMeta: {
-    color: '#4b587c',
-  },
-  action: {
-    color: '#2f4be0',
-    fontWeight: '600',
+    ...ui.mutedText,
   },
   suggestion: {
-    color: '#2f4be0',
-    paddingVertical: 4,
+    ...ui.actionText,
+    paddingVertical: 5,
   },
 });

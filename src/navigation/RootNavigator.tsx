@@ -8,6 +8,7 @@ import { OnboardingScreen } from '../screens/OnboardingScreen';
 import { SessionsScreen } from '../screens/SessionsScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { TasksScreen } from '../screens/TasksScreen';
+import { brand } from '../theme/brand';
 
 type AppTab = 'dashboard' | 'clients' | 'sessions' | 'tasks' | 'settings';
 
@@ -72,22 +73,23 @@ const styles = StyleSheet.create({
   tabBar: {
     flexDirection: 'row',
     borderTopWidth: 1,
-    borderColor: '#d8dff2',
-    backgroundColor: '#fff',
-    paddingBottom: 10,
-    paddingTop: 8,
+    borderColor: brand.border,
+    backgroundColor: brand.card,
+    paddingBottom: 12,
+    paddingTop: 10,
   },
   tabItem: {
     flex: 1,
     alignItems: 'center',
+    paddingVertical: 6,
   },
   tabText: {
-    color: '#4b587c',
-    fontSize: 12,
+    color: brand.mutedText,
+    fontSize: 12.5,
   },
   tabTextActive: {
-    color: '#2f4be0',
-    fontSize: 12,
+    color: brand.primary,
+    fontSize: 12.5,
     fontWeight: '700',
   },
 });

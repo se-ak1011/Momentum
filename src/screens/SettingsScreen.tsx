@@ -3,6 +3,7 @@ import { ScreenContainer } from '../components/ScreenContainer';
 import { env } from '../config/env';
 import { signOut } from '../services/authService';
 import { useAppContext } from '../context/AppContext';
+import { brand, ui } from '../theme/brand';
 
 export function SettingsScreen() {
   const { providerProfile, plan, user } = useAppContext();
@@ -40,29 +41,27 @@ export function SettingsScreen() {
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderColor: '#d8dff2',
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    padding: 12,
-    gap: 4,
+    ...ui.card,
+    gap: 6,
   },
   title: {
-    fontWeight: '600',
+    ...ui.sectionTitle,
+    fontSize: 17,
   },
   meta: {
-    color: '#4b587c',
+    ...ui.mutedText,
   },
   dangerButton: {
-    borderRadius: 8,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#c0392b',
-    padding: 10,
-    marginTop: 4,
+    borderColor: brand.warning,
+    backgroundColor: '#F6F0E5',
+    padding: 12,
+    marginTop: 6,
   },
   dangerLabel: {
-    color: '#c0392b',
+    color: brand.warning,
     textAlign: 'center',
-    fontWeight: '600',
+    fontWeight: '700',
   },
 });

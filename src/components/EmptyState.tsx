@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { brand, ui } from '../theme/brand';
 
 export function EmptyState({ title, subtitle }: { title: string; subtitle: string }) {
   return (
@@ -11,18 +12,16 @@ export function EmptyState({ title, subtitle }: { title: string; subtitle: strin
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#d8dff2',
-    padding: 16,
-    backgroundColor: '#ffffff',
-    gap: 8,
+    ...ui.card,
+    gap: 10,
   },
   title: {
+    color: brand.text,
     fontWeight: '600',
-    fontSize: 16,
+    fontSize: 17,
   },
   subtitle: {
-    color: '#4b587c',
+    color: brand.mutedText,
+    lineHeight: 21,
   },
 });
